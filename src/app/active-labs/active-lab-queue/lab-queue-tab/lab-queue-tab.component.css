@@ -1,0 +1,15 @@
+mat-list-option h3 {
+    font-weight: bolder !important;
+    font-size: large !important;
+    margin: auto;
+}
+
+.queue-number {
+    margin: 5px;
+    font-size: 25px;
+    float: left;
+}
+
+.selected-student {
+    margin: 5px;
+}

@@ -1,0 +1,32 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="75%" fxFlex.lt-sm="100%">
+        <mat-card *ngIf="staffUnit">
+            <mat-card-header>
+                <mat-card-title>{{staffUnit.unitCode}}</mat-card-title>
+                <mat-card-subtitle>Current Lab Queue</mat-card-subtitle>
+                <button mat-icon-button color="primary" matTooltip="Refresh Course Unit Data" aria-label="Refresh Course Unit Data" (click)="onRefresh()">
+                    <mat-icon>cached</mat-icon>
+                </button>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="tab-flex-container" fxLayout="row" fxLayoutAlign="center">
+                    <!-- <h3 class="repo-name">{{ labFormat.repoNamingSchema }}</h3> -->
+                    <mat-tab-group fxFlex="1 1 fill" mat-stretch-tabs>
+                        <!-- <div > -->
+                            <ng-container *ngFor="let labFormat of staffUnit.labFormats" >
+                                <mat-tab 
+                                    *ngFor="let ex of labFormat.labExercises"
+                                    [label]="ex.exerciseName">
+                                    <ng-template matTabContent>
+                                        <app-lab-queue-tab [exId]="ex.exerciseId">
+                                        </app-lab-queue-tab>
+                                    </ng-template>
+                                </mat-tab>
+                            </ng-container>
+                        <!-- </div> -->
+                    </mat-tab-group>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

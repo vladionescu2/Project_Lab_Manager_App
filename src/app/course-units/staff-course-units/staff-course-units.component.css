@@ -1,0 +1,14 @@
+.container {
+    margin-bottom: 25px;
+}
+
+.new-course-unit {
+    position: fixed;
+    margin-top: 1vh;
+    right: 1vw;
+    z-index: 1;
+}
+
+.delete-format {
+    float: left;
+}

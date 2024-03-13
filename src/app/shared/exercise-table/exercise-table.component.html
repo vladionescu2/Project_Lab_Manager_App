@@ -1,0 +1,73 @@
+<form *ngIf="includeFiltering" novalidate [formGroup]="filterTableFormGroup">
+  <mat-form-field appearance="outline" class="full-width-input">
+      <mat-label>Submissions Filter</mat-label>
+      <span matPrefix><mat-icon>search</mat-icon></span>
+      <input matInput formControlName="filter" placeholder="Search Using Any Property" />
+  </mat-form-field>
+</form>
+
+<table mat-table [dataSource]="dataSource" matSort [trackBy]="trackByFn">
+
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                    [aria-label]="checkboxLabel()">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)"
+                    [aria-label]="checkboxLabel(row)">
+      </mat-checkbox>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="unit">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Course Unit </th>
+    <td mat-cell *matCellDef="let element"> {{element.unit}} </td>
+  </ng-container>
+  
+  <ng-container matColumnDef="exercise">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+    <td mat-cell *matCellDef="let element">
+      <div>
+        <span>{{element.exercise}}</span>
+        <mat-icon *ngIf="element.late" matTooltip="This submission is late!" class="late-icon">warning</mat-icon>
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Submitted on </th>
+    <td mat-cell *matCellDef="let element"> {{element.date | date: (mobileQuery.matches ? 'd/M/yy, H:mm' : 'medium')}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="deadline">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Deadline </th>
+    <td mat-cell *matCellDef="let element"> {{element.deadline | date: (mobileQuery.matches ? 'd/M/yy, H:mm' : 'MMM d, y, h:mm a')}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="repoName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Repository </th>
+    <td mat-cell *matCellDef="let element"> {{element.repoName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="queuePos">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Queue Pos. </th>
+    <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="element.queuePos">
+          {{element.queuePos || '-'}} 
+        </ng-container>
+        <mat-spinner *ngIf="element.ready" class="marking-spinner" [diameter]="20" matTooltip="You are about to get marked!">
+        </mat-spinner>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+  <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();" [class.late]="row.late"></tr>
+</table>
+
+<mat-paginator *ngIf="includePaginating" #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25]" [showFirstLastButtons]="true"> </mat-paginator>

@@ -1,0 +1,7 @@
+.time-field {
+    width: 90px;
+}
+
+.exercise-field:not(:last-child) {
+    margin-bottom: 12px;
+}

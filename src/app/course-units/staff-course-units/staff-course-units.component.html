@@ -1,0 +1,38 @@
+<button mat-fab color="accent" class="new-course-unit" aria-label="Create New Course Unit" matTooltip="Create New Course Unit" (click)="openNewCourseUnitMenu()">
+    <mat-icon>playlist_add</mat-icon>
+</button>
+<button mat-icon-button color="primary" matTooltip="Refresh Course Unit Data" aria-label="Refresh Course Unit Data" (click)="onRefresh()">
+    <mat-icon>cached</mat-icon>
+</button>
+
+<div *ngFor="let unit of staffUnits" class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="75%" fxFlex.lt-sm="100%">
+        <mat-card>
+            <mat-card-header>
+                <h1>{{unit.unitCode}}</h1>
+                <button mat-icon-button color="warn" aria-label="Delete Course Unit" matTooltip="Delete Course Unit" (click)="confirmDeleteUnit(unit.unitCode)">
+                    <mat-icon>highlight_off</mat-icon>
+                </button>
+            </mat-card-header>
+            <mat-card-content>
+                <p *ngIf="unit.upcomingLabTimes"><b>Upcoming lab:</b> {{unit.upcomingLabTimes.start | date: 'MMM d, y, h:mm a'}}</p>
+                <h2>Repositories:</h2>
+                <div *ngFor="let labFormat of unit.labFormats">
+                    <button class="delete-format" mat-icon-button color="warn" aria-label="Delete Lab Format" matTooltip="Delete Lab Format" (click)="confirmDeleteFormat(labFormat.repoNamingSchema)">
+                        <mat-icon>highlight_off</mat-icon>
+                    </button>
+                    <h3>{{labFormat.repoNamingSchema}}</h3>
+                    Deadlines:
+                    <ul>
+                        <li *ngFor="let labExercise of labFormat.labExercises">
+                            {{labExercise.exerciseName}}: {{labExercise.deadline | date: 'MMM d, y, h:mm a'}}
+                        </li>
+                    </ul>
+                </div>
+                <button mat-mini-fab color="primary" aria-label="Add New Lab Format" matTooltip="Add New Lab Format" (click)="openNewLabFormatMenu(unit)">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

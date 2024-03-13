@@ -1,0 +1,89 @@
+<mat-card [ngClass]="{
+        'about-to-start': currentStatus == 1,
+        'in-progress': currentStatus == 2
+    }">
+    <ng-container *ngTemplateOutlet="currentStatus > 0 ? activeContent : defaultContent"></ng-container>
+</mat-card>
+
+<ng-template #activeContent>
+    <mat-card-header>
+        <mat-card-title>{{ lab.courseUnit.unitCode}}<span fxHide.lt-sm="true"> - {{ this.currentStatus == 1 ? 'About to Start' : 'In Progress'}}</span>
+        </mat-card-title>
+        <mat-card-subtitle>
+            <ng-container *ngIf="this.currentStatus == 1">
+                Next lab on 
+                <strong fxHide.lt-sm>{{ lab.courseUnit.upcomingLabTimes.start | date:'MMM d, y, h:mm a'}}</strong>
+                <strong fxHide.gt-xs>{{ lab.courseUnit.upcomingLabTimes.start | date:'d.M.y, H:mm'}}</strong>
+
+                <div>
+                    {{ timeToStart.minutes != null ?
+                        '(starting in ' + timeToStart.minutes + ':' + (timeToStart.seconds < 10 ? '0' : '' ) +
+                            timeToStart.seconds + ')' : '' }}
+                </div>
+            </ng-container>
+            <ng-container *ngIf="this.currentStatus == 2">
+                Lab Ending at <strong>{{ lab.courseUnit.upcomingLabTimes.end | date:'h:mm a'}}</strong>
+            </ng-container>
+        </mat-card-subtitle>
+        <ng-container [ngSwitch]="currentMarkingStatus">
+            <div *ngSwitchCase="'submitted'">
+                <span fxHide.lt-sm="true">Request Submitted</span>
+                <mat-icon aria-hidden="false" aria-label="Request Submitted" class="status-icon submitted">check_circle
+                </mat-icon>
+            </div>
+            <div *ngSwitchCase="'changed'">
+                <span fxHide.lt-sm="true">Request is Being Edited</span>
+                <mat-icon aria-hidden="false" aria-label="Request is Being Edited" class="status-icon changed">create
+                </mat-icon>
+            </div>
+            <div *ngSwitchDefault>
+                <span class="label" fxHide.lt-sm="true">No Marking Requested</span>
+                <mat-icon aria-hidden="false" aria-label="No Marking Requested" class="status-icon no-marking">dangerous
+                </mat-icon>
+            </div>
+        </ng-container>
+    </mat-card-header>
+    <mat-card-content>
+        <h3>Choose submissions to mark</h3>
+        <app-exercise-table [exercises]="exercises"
+            [displayedColumns]="['select', 'exercise', 'date', 'deadline', 'queuePos']"
+            [optionalColumns]="['deadline']">
+        </app-exercise-table>
+    </mat-card-content>
+    <mat-card-actions>
+        <form (ngSubmit)="onRequest()">
+            <mat-form-field>
+                <mat-label>Seat Nr.</mat-label>
+                <input matInput type="text" required [formControl]="seatNr">
+                <button type="button" *ngIf=seatNr.disabled mat-button matSuffix mat-icon-button aria-label="Edit Seat"
+                    matTooltip="Edit Seat" (click)="editSeatNr()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+            <button type="submit" id="submit" mat-flat-button color="accent" [disabled]="requestDisabled()">
+                {{ currentMarkingStatus == 'changed' ? (table.selection.selected.length == 0 ? 'Delete All Markings' :
+                'Confirm Edits') : 'Request Marking' }}
+            </button>
+            <button class="cancel-edits-button" type="button" *ngIf="currentMarkingStatus=='changed'" mat-icon-button
+                aria-label="Cancel Edits" matTooltip="Cancel Edits" (click)="cancelEdits()">
+                <mat-icon>refresh</mat-icon>
+            </button>
+        </form>
+        <!-- <div>{{ seatNr.status }}</div>
+        <div>{{ this.lastConfirmedSelection | json}}</div> -->
+    </mat-card-actions>
+</ng-template>
+
+<ng-template #defaultContent>
+    <mat-card-header>
+        <mat-card-title>{{ lab.courseUnit.unitCode}}</mat-card-title>
+        <mat-card-subtitle>Next lab on 
+            <strong fxHide.lt-sm>{{ lab.courseUnit.upcomingLabTimes.start | date:'MMM d, y, h:mm a'}}</strong>
+            <strong fxHide.gt-xs>{{ lab.courseUnit.upcomingLabTimes.start | date:'d.M.y, H:mm'}}</strong>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <app-exercise-table [exercises]="exercises" [displayedColumns]="['exercise', 'date', 'deadline']">
+        </app-exercise-table>
+    </mat-card-content>
+</ng-template>

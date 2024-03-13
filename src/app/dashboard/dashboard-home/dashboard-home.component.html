@@ -1,0 +1,25 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+
+  <div fxFlex="95%">
+    
+    <div class="container" fxLayout="row" fxLayoutAlign="center none">
+      <h2>Welcome back, {{currentUser.fullName}}!</h2>
+      <button mat-icon-button color="primary" matTooltip="Refresh Current Submissions" aria-label="Refresh Submissions" (click)="onRefresh()">
+        <mat-icon>cached</mat-icon>
+      </button>
+    </div>
+
+    <!-- <div class="container" fxLayout="row" fxLayoutAlign="center none">
+      <div fxFlex="50%" class="text-center no-records animate">
+        <mat-icon>dashboard</mat-icon>
+        <p>This is the dashboard.</p>
+      </div>
+    </div> -->
+
+    <div class="container" fxLayout="row" fxLayoutAlign="center none" *ngFor="let lab of submissions" class="window-element">
+      <div fxFlex="75%" fxFlex.lt-sm="100%">
+        <app-lab-window [lab]="lab"></app-lab-window>
+      </div>
+    </div>
+  </div>
+</div>

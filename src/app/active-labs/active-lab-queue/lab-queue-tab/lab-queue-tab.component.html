@@ -1,0 +1,13 @@
+<h2>Lab Queue</h2>
+<button *ngIf="labQueue && labQueue.studentRequests.length > 0 && !selectedStudent" mat-raised-button (click)="getNextStudent()">Next Student</button>
+<button *ngIf="selectedStudent" mat-raised-button (click)="studentMarked()">Student Marked</button>
+<span class="selected-student" *ngIf="selectedStudent">{{selectedStudent.userName}} - Seat {{selectedStudent.seatNr}}</span>
+<mat-selection-list *ngIf="labQueue" [multiple]="false">
+    <mat-list-option *ngFor="let student of labQueue.studentRequests; index as i">
+        <div>
+            <span class="queue-number">{{i + 1}}</span>
+            <h3>{{student.userName}}</h3>
+            <div>Seat {{student.seatNr}}</div>
+        </div>
+    </mat-list-option>
+</mat-selection-list>

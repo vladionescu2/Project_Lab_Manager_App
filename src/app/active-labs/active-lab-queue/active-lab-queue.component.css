@@ -1,0 +1,17 @@
+.repo-name {
+    width: 100%;
+    text-align: center;
+}
+
+.tab-flex-container > div {
+    min-width: 0;
+}
+
+.tab-flex-container > div:not(:last-child) {
+    border-right: thin dashed rgba(0, 0, 0, .12);
+}
+
+
+::ng-deep.mat-tab-link,  ::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
+    min-width: 0px!important;
+}

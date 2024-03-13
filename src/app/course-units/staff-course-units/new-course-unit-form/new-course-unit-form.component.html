@@ -1,0 +1,65 @@
+<h1 mat-dialog-title>Add New Course Unit</h1>
+<div mat-dialog-content>
+    <form [formGroup]="courseUnitForm">
+        <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap.gt-xs="20px">
+            <mat-form-field appearance="outline">
+                <mat-label>Unit Code</mat-label>
+                <input #unitCode required matInput type="text" formControlName="unitCode" (input)="unitCode.value = unitCode.value.toUpperCase()">
+                <mat-error *ngIf="unitCodeControl.invalid && (unitCodeControl.dirty || unitCodeControl.touched)">{{getUnitCodeError()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Add Lab Session Dates</mat-label>
+                <input matInput [formControl]="datePicker" [matDatepicker]="picker" (dateChange)="addNewDate($event)">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap.gt-xs="20px">
+            <div>
+                <mat-list>
+                    <div *ngFor="let date of labDatesSource; let i = index">
+                        <!-- <mat-form-field>
+                            <input matInput [ngxTimepicker]="endTime" [format]="24" [formControlName]="'slot' + (i + 1)"/>
+                        </mat-form-field>
+                        <ngx-material-timepicker #endTime [minutesGap]="10"></ngx-material-timepicker> -->
+                        <!-- <ngx-timepicker-field [format]="24" [defaultTime]="'00:00'" (timeChanged)="setNewTime($event, date)"></ngx-timepicker-field>
+                        {{date | date:'MMM d, y'}} -->
+                        <mat-form-field class="time-field">
+                            <mat-label>Start Time</mat-label>
+                            <input matInput type="time" value="00:00" (input)="setNewTime($event, date.start)">
+                        </mat-form-field>
+                        -
+                        <mat-form-field class="time-field">
+                            <mat-label>End Time</mat-label>
+                            <input matInput type="time" value="00:00" (input)="setNewTime($event, date.end)">
+                        </mat-form-field>
+                        {{date.start | date:'MMM d, y'}}
+                        <button mat-button mat-icon-button aria-label="Clear" (click)="removeDate(date)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </mat-list>
+            </div>
+            <div>
+                <mat-form-field>
+                    <mat-label>Staff Members Usernames</mat-label>
+                    <mat-chip-list #chipList aria-label="Staff selection">
+                        <mat-chip *ngFor="let staffMember of staffMembers" [selectable]="true"
+                                 [removable]="true" (removed)="removeStaff(staffMember)">
+                          {{staffMember}}
+                          <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                        <input [matChipInputFor]="chipList"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        [matChipInputAddOnBlur]="true"
+                        (matChipInputTokenEnd)="addStaff($event)">
+                    </mat-chip-list>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-button cdkFocusInitial (click)="onSubmit()" [disabled]="!courseUnitForm.valid">Submit</button>
+</div>

@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>{{data.staffUnit.unitCode}} New Lab Format</h1>
+<div mat-dialog-content>
+<form [formGroup]="form">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap.gt-xs="20px">
+        <mat-form-field appearance="outline">
+            <mat-label>Repository Name Format</mat-label>
+            <input required matInput type="text" formControlName="repoName">
+            <mat-error *ngIf="repoName.invalid && (repoName.dirty || repoName.touched)">{{getNameError(repoName)}}</mat-error>
+        </mat-form-field>
+        <button mat-button (click)="addNewExercise()">Add New Exercise</button>
+    </div>
+        <div class="exercise-field" *ngFor="let labExercise of this.labExercises" [formGroup]="labExercise">
+            <mat-form-field>
+                <mat-label>Exercise Name</mat-label>
+                <input required matInput type="text" formControlName="exerciseName">
+                <mat-error 
+                    *ngIf="labExercise.get('exerciseName').invalid && 
+                    (labExercise.get('exerciseName').dirty || labExercise.get('exerciseName').touched)">
+                        {{getNameError(labExercise.get('exerciseName'))}}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Lab Deadline</mat-label>
+                <input required matInput formControlName="deadline" [matDatepicker]="picker" (dateChange)="setDate($event, labExercise.get('deadline'))">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="time-field" *ngIf="labExercise.get('deadline').value">
+                <mat-label>Deadline Time</mat-label>
+                <input required matInput type="time" value="00:00" (input)="setNewTime($event, labExercise.get('deadline'))">
+            </mat-form-field>
+            <button mat-button mat-icon-button aria-label="Clear" (click)="removeExercise(labExercise)">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+</form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-raised-button color="primary" cdkFocusInitial [disabled]="isDisabled()" (click)="onSubmit()">Submit</button>
+</div>
+

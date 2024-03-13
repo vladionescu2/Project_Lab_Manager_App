@@ -1,0 +1,15 @@
+/* mat-form-field {
+    display: block;
+} */
+
+::ng-deep.timepicker-backdrop-overlay, ::ng-deep.timepicker-overlay {
+    z-index: 1500 !important;
+}
+
+ngx-timepicker-field {
+    display: inline-block;
+}
+
+.time-field {
+    width: 90px;
+}

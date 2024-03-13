@@ -1,0 +1,59 @@
+#submit {
+    float: right;
+}
+
+mat-form-field {
+    max-width: 100px;
+    width: 25%;
+}
+
+mat-card {
+    padding: 25px;
+}
+
+.cancel-edits-button {
+    float: right;
+}
+
+/* .about-to-start {
+    border:5px solid orange;
+}
+
+.in-progress {
+    border:5px solid green;
+} */
+
+.about-to-start {
+    box-shadow: 0 0 3px 5px orange;
+}
+
+.in-progress {
+    box-shadow: 0 0 3px 5px green;
+}
+
+.no-marking {
+    color: red;
+}
+
+.changed {
+    color: coral;
+}
+
+.submitted {
+    color: seagreen;
+}
+
+mat-card-header {
+    justify-content: space-between;
+}
+
+.status-icon {
+    width: fit-content;
+    height: fit-content;
+    font-size: 40px;
+}
+
+.label {
+    position: relative;
+    top: 0%;
+}

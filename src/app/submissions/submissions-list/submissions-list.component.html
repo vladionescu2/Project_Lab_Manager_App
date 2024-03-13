@@ -1,0 +1,15 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="95%">
+        <mat-card>
+            <mat-card-header>
+                <h1>Current Submissions</h1>
+                <button mat-icon-button color="primary" matTooltip="Refresh Current Submissions" aria-label="Refresh Submissions" (click)="onRefresh()">
+                    <mat-icon>cached</mat-icon>
+                </button>
+            </mat-card-header>
+            <mat-card-content>
+                <app-exercise-table [exercises]="exercises" [displayedColumns]="columns" [includePaginating]="true" [includeFiltering]="true"></app-exercise-table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

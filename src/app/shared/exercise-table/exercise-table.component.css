@@ -1,0 +1,12 @@
+table {
+    width: 100%;
+}
+
+.mat-column-select {
+    overflow: initial;
+  }
+
+.late-icon {
+    font-size: 1.5em;
+    position: relative;
+}

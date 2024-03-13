@@ -1,0 +1,20 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="75%" fxFlex.lt-sm="100%">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>All Upcoming Labs</mat-card-title>
+                <button mat-icon-button color="primary" matTooltip="Refresh Course Unit Data" aria-label="Refresh Course Unit Data" (click)="onRefresh()">
+                    <mat-icon>cached</mat-icon>
+                </button>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-selection-list [multiple]="false">
+                    <mat-list-option *ngFor="let unit of staffUnits" [routerLink]="['./', unit.unitCode]">
+                        <h3 class="unitCode">{{unit.unitCode}}</h3>
+                        <p>{{unit.upcomingLabTimes.start | date: 'MMM d, y, h:mm a'}} - {{unit.upcomingLabTimes.end | date: 'h:mm a'}}</p>
+                    </mat-list-option>
+                </mat-selection-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
